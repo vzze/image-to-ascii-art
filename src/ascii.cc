@@ -44,7 +44,7 @@ void bytes_to_pixels(const int & width, const int & height, const int & value, s
         }
 }
 
-constexpr size_t SIZE = 25;
+constexpr size_t SIZE = 24;
 
 float iota() {
     static float x = 0.0F;
@@ -59,7 +59,6 @@ std::array<std::pair<float, char>, SIZE> Brightness = {
     std::make_pair(iota(), '.'),
     std::make_pair(iota(), ':'),
     std::make_pair(iota(), ';'),
-    std::make_pair(iota(), '!'),
     std::make_pair(iota(), '-'),
     std::make_pair(iota(), '~'),
     std::make_pair(iota(), '"'),
@@ -71,10 +70,10 @@ std::array<std::pair<float, char>, SIZE> Brightness = {
     std::make_pair(iota(), 'x'),
     std::make_pair(iota(), 'a'),
     std::make_pair(iota(), 'N'),
-    std::make_pair(iota(), '8'),
     std::make_pair(iota(), '&'),
-    std::make_pair(iota(), '%'),
+    std::make_pair(iota(), '8'),
     std::make_pair(iota(), '$'),
+    std::make_pair(iota(), '%'),
     std::make_pair(iota(), '#'),
     std::make_pair(iota(), 'W'),
     std::make_pair(iota(), '@')
