@@ -44,23 +44,30 @@ void bytes_to_pixels(const int & width, const int & height, const int & value, s
         }
 }
 
+constexpr size_t SIZE = 25;
+
 float iota() {
     static float x = 0.0F;
-    x += 0.05F;
+    x += 1.0F / (float)(SIZE);
     return x;
 }
 
-std::array<std::pair<float, char>, 20> Brightness = {
+std::array<std::pair<float, char>, SIZE> Brightness = {
     std::make_pair(iota(), ' '),
     std::make_pair(iota(), '`'),
     std::make_pair(iota(), '.'),
     std::make_pair(iota(), ':'),
     std::make_pair(iota(), ';'),
+    std::make_pair(iota(), '/'),
+    std::make_pair(iota(), '}'),
+    std::make_pair(iota(), '['),
     std::make_pair(iota(), '-'),
+    std::make_pair(iota(), '~'),
     std::make_pair(iota(), '"'),
     std::make_pair(iota(), '<'),
     std::make_pair(iota(), '+'),
     std::make_pair(iota(), '*'),
+    std::make_pair(iota(), 'u'),
     std::make_pair(iota(), 'o'),
     std::make_pair(iota(), 'a'),
     std::make_pair(iota(), '%'),
@@ -120,7 +127,7 @@ void img_to_ascii(const int & width, const int & height, const std::pair<int, in
 void load_args(std::filesystem::path & filename, int & font_pt, std::pair<int, int> & ratio) {
     std::cout << "Path: "; std::cin >> filename;
 
-    std::cout << "Font Size: "; std::cin >> font_pt;
+    std::cout << "Font Size (Points): "; std::cin >> font_pt;
 
     std::string tr;
 
