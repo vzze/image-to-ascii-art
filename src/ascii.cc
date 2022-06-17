@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <filesystem>
 #include <array>
 #include <algorithm>
 #include <cmath>
@@ -9,9 +10,9 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "../dependencies/stb_image.h"
 
-bool load_image(std::string & img_path, int & x, int & y, std::vector<unsigned char> & dest) {
+bool load_image(std::filesystem::path & img_path, int & x, int & y, std::vector<unsigned char> & dest) {
     int n;
-    unsigned char * data = stbi_load(img_path.c_str(), &x, &y, &n, 4);
+    unsigned char * data = stbi_load(img_path.string().c_str(), &x, &y, &n, 4);
     bool loaded = (data != nullptr);
 
     if(loaded) {
@@ -116,7 +117,7 @@ void img_to_ascii(const int & width, const int & height, const std::pair<int, in
     }
 }
 
-void load_args(std::string & filename, int & font_pt, std::pair<int, int> & ratio) {
+void load_args(std::filesystem::path & filename, int & font_pt, std::pair<int, int> & ratio) {
     std::cout << "Path: "; std::cin >> filename;
 
     std::cout << "Font Size: "; std::cin >> font_pt;
@@ -130,21 +131,12 @@ void load_args(std::string & filename, int & font_pt, std::pair<int, int> & rati
 
 }
 
-int main(int argc, char ** argv) {
-
-    std::string filename;
-    int font_pt;
-    std::pair<int, int> ratio;
-
-    load_args(filename, font_pt, ratio);
-
-    int font_height = std::ceil(font_pt * 1.333333F);
-
+inline int process_images(std::filesystem::path path, int font_height, std::pair<int, int> ratio) {
     int width, height;
 
     std::vector<unsigned char> img;
 
-    if(!load_image(filename, width, height, img)) {
+    if(!load_image(path, width, height, img)) {
         std::cerr << "Invalid Path\n";
         return 42;
     }
@@ -162,10 +154,34 @@ int main(int argc, char ** argv) {
 
     img_to_ascii(width, height, blck_size, img_pixels, ascii);
 
-    std::ofstream out("out.txt");
+    std::ofstream out(std::filesystem::path(path.string() + ".txt"));
 
     for(auto & line : ascii) {
         if(line != "")
             out << line << '\n';
+    }
+
+    return 0;
+}
+
+int main(int argc, char ** argv) {
+
+    std::filesystem::path path;
+    int font_pt;
+    std::pair<int, int> ratio;
+
+    load_args(path, font_pt, ratio);
+
+    int font_height = std::ceil(font_pt * 1.333333F);
+
+    if(path.has_extension()) {
+        return process_images(path, font_height, ratio);
+    } else {
+        int errc = 0;
+        for(auto f : std::filesystem::directory_iterator(path))
+            if(!f.is_directory()) {
+                errc += process_images(f.path(), font_height, ratio);
+            }
+        return errc;
     }
 }
