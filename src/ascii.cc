@@ -154,7 +154,9 @@ inline int process_images(std::filesystem::path path, int font_height, std::pair
 
     img_to_ascii(width, height, blck_size, img_pixels, ascii);
 
-    std::ofstream out(std::filesystem::path(path.string() + ".txt"));
+    path.replace_extension(".txt");
+
+    std::ofstream out(path);
 
     for(auto & line : ascii) {
         if(line != "")
@@ -180,7 +182,8 @@ int main(int argc, char ** argv) {
         int errc = 0;
         for(auto f : std::filesystem::directory_iterator(path))
             if(!f.is_directory()) {
-                errc += process_images(f.path(), font_height, ratio);
+                if(f.path().extension() == ".png")
+                    errc += process_images(f.path(), font_height, ratio);
             }
         return errc;
     }
