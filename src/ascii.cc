@@ -27,7 +27,7 @@ struct Pixel {
     int r, g, b, a;
 
     float greyscale() {
-        return (.299F * (float)(r) + .587F * (float)(g) + .114F * (float)(b)) / 255.0F;
+        return (.299F * (float)(r) + .587F * (float)(g) + .114F * (float)(b)) / 255.0F * ((float)(a) / 255.0F);
     }
 };
 
