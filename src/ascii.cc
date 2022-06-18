@@ -46,37 +46,33 @@ void bytes_to_pixels(const int & width, const int & height, const int & value, s
 
 constexpr size_t SIZE = 24;
 
-float iota() {
+float iota(bool reset = false) {
     static float x = 0.0F;
-    x += 1.0F / (float)(SIZE);
+    if(reset)
+        x = 0.0F;
+    else
+        x += 1.0F / (float)(SIZE);
     return x;
 }
 
-std::array<std::pair<float, char>, SIZE> Brightness = {
-    std::make_pair(iota(), ' '),
-    std::make_pair(iota(), '`'),
-    std::make_pair(iota(), '\''),
-    std::make_pair(iota(), '.'),
-    std::make_pair(iota(), ':'),
-    std::make_pair(iota(), ';'),
-    std::make_pair(iota(), '-'),
-    std::make_pair(iota(), '~'),
-    std::make_pair(iota(), '"'),
-    std::make_pair(iota(), '<'),
-    std::make_pair(iota(), '+'),
-    std::make_pair(iota(), '*'),
-    std::make_pair(iota(), 'u'),
-    std::make_pair(iota(), 'o'),
-    std::make_pair(iota(), 'x'),
-    std::make_pair(iota(), 'a'),
-    std::make_pair(iota(), 'N'),
-    std::make_pair(iota(), '&'),
-    std::make_pair(iota(), '8'),
-    std::make_pair(iota(), '$'),
-    std::make_pair(iota(), '%'),
-    std::make_pair(iota(), '#'),
-    std::make_pair(iota(), 'W'),
-    std::make_pair(iota(), '@')
+std::array<std::pair<float, char>, SIZE> Brightness;
+
+std::array<std::pair<float, char>, SIZE> B1 = {
+    std::make_pair(iota(), ' '), std::make_pair(iota(), '`'), std::make_pair(iota(), '\''), std::make_pair(iota(), '.'),
+    std::make_pair(iota(), ':'), std::make_pair(iota(), ';'), std::make_pair(iota(), '-'), std::make_pair(iota(), '~'),
+    std::make_pair(iota(), '"'), std::make_pair(iota(), '<'), std::make_pair(iota(), '+'), std::make_pair(iota(), '*'),
+    std::make_pair(iota(), 'u'), std::make_pair(iota(), 'o'), std::make_pair(iota(), 'x'), std::make_pair(iota(), 'a'),
+    std::make_pair(iota(), 'N'), std::make_pair(iota(), '&'), std::make_pair(iota(), '8'), std::make_pair(iota(), '$'),
+    std::make_pair(iota(), '%'), std::make_pair(iota(), '#'), std::make_pair(iota(), 'W'), std::make_pair(iota(), '@')
+};
+
+std::array<std::pair<float, char>, SIZE> B2 = {
+    std::make_pair(iota(true) + iota(), ' '), std::make_pair(iota(), '`'), std::make_pair(iota(), '\''), std::make_pair(iota(), '.'),
+    std::make_pair(iota(), '-'), std::make_pair(iota(), '~'), std::make_pair(iota(), '"'), std::make_pair(iota(), ':'),
+    std::make_pair(iota(), ';'), std::make_pair(iota(), '<'), std::make_pair(iota(), '+'), std::make_pair(iota(), '*'),
+    std::make_pair(iota(), 'u'), std::make_pair(iota(), 'o'), std::make_pair(iota(), 'x'), std::make_pair(iota(), 'a'),
+    std::make_pair(iota(), 'N'), std::make_pair(iota(), '&'), std::make_pair(iota(), '8'), std::make_pair(iota(), '$'),
+    std::make_pair(iota(), '%'), std::make_pair(iota(), '#'), std::make_pair(iota(), 'W'), std::make_pair(iota(), '@')
 };
 
 struct Block {
@@ -135,6 +131,25 @@ void load_args(std::filesystem::path & filename, int & font_pt, std::pair<int, i
     if(tr == "3:5") ratio = {3, 5};
     else ratio = {1, 2};
 
+    char inv;
+
+    int scheme;
+
+    std::cout << "Character Scheme (Default = 0; 0-1): "; std::cin >> scheme;
+
+    if(scheme == 0)
+        Brightness = B1;
+    else
+        Brightness = B2;
+
+    std::cout << "Inverted (y/n): "; std::cin >> inv;
+
+    if(inv == 'y') {
+        iota(true);
+        std::reverse(Brightness.begin(), Brightness.end());
+        for(auto & br : Brightness)
+            br.first = iota();
+    }
 }
 
 inline int process_images(std::filesystem::path path, int font_height, std::pair<int, int> ratio) {
