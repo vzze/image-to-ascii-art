@@ -1,11 +1,9 @@
 #include <iostream>
 #include <fstream>
+#include <filesystem>
 #include <string>
 #include <vector>
-#include <filesystem>
 #include <array>
-#include <algorithm>
-#include <cmath>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "../dependencies/stb_image.h"
@@ -46,14 +44,18 @@ void bytes_to_pixels(const int & width, const int & height, const int & value, s
 
 constexpr size_t SIZE = 24;
 
-float iota(bool reset = false) {
-    static float x = 0.0F;
-    if(reset)
-        x = 0.0F;
-    else
-        x += 1.0F / (float)(SIZE);
-    return x;
-}
+struct {
+    private:
+        float _i = 0.0F;
+    public:
+        constexpr float operator () (bool reset = false) {
+            if(reset)
+                _i = 0.0F;
+            else
+                _i += 1.0F / (float)(SIZE);
+            return _i;
+        }
+} iota;
 
 std::array<std::pair<float, char>, SIZE> Brightness;
 
