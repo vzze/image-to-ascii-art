@@ -73,7 +73,7 @@ consteval std::array<float, SIZE> division() {
 }
 
 int OFFSET = 0;
-std::string_view ASCII = " `'.:;-~\"<+*uoxaN&8$%#W@ `'.-~\":;<+*uoxaN&8$%#W@";
+constexpr std::string_view ASCII = " `'.:;-~\"<+*uoxaN&8$%#W@ `'.-~\":;<+*uoxaN&8$%#W@";
 
 auto BRIGHTNESS = division();
 
@@ -193,9 +193,8 @@ int process_image(const std::filesystem::path & image_path, const std::pair<int,
 int main() {
     const Arguments args = load_args();
 
-    if(args.path.has_extension()) {
+    if(args.path.has_extension())
         return process_image(args.path, args.block_size);
-    }
 
     int err_code = 0;
 
