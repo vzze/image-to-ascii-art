@@ -1,2 +1,2 @@
-*.exe
-out.txt
+build
+.cache
