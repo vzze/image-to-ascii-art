@@ -11,7 +11,7 @@ set(CMAKE_BUILD_TYPE "RelWithDebInfo")
 
 cmake_minimum_required(VERSION 3.2)
 
-project(image_to_ascii)
+project(image-to-ascii)
 
 include_directories(
     lib/stb_image/include
