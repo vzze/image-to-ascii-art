@@ -73,7 +73,7 @@ consteval std::array<float, SIZE> division() {
 }
 
 int OFFSET = 0;
-constexpr std::string_view ASCII = " `'.:;-~\"<+*uoxaN&8$%#W@ `'.-~\":;<+*uoxaN&8$%#W@";
+std::string ASCII = " `'.:;-~\"<+*uoxaN&8$%#W@ `'.-~\":;<+*uoxaN&8$%#W@";
 
 auto BRIGHTNESS = division();
 
@@ -155,7 +155,7 @@ Arguments load_args() {
     std::cin >> inverted;
 
     if(inverted == 'y')
-        std::reverse(BRIGHTNESS.begin(), BRIGHTNESS.end());
+        std::reverse(ASCII.begin(), ASCII.end());
 
     int scheme;
 
